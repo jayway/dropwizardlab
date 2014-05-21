@@ -1,5 +1,6 @@
 package com.jayway.labs.dropwizard;
 
+import com.jayway.labs.dropwizard.resources.UnansweredResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -21,6 +22,7 @@ public class StackExchangeViewApplication extends Application<StackExchangeViewC
     @Override
     public void run(StackExchangeViewConfiguration configuration,
                     Environment environment) {
+        environment.jersey().register(new UnansweredResource());
     }
 
 }

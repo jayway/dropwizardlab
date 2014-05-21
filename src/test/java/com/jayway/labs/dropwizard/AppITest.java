@@ -27,4 +27,16 @@ public class AppITest {
 
         assertThat(response.getStatus(), is(200));
     }
+
+    @Test
+    public void getStaticAssets() {
+        Client client = new Client();
+
+        ClientResponse response = client.resource(
+                String.format("http://localhost:%d/assets/index.html", RULE.getLocalPort()))
+                .get(ClientResponse.class);
+
+        assertThat(response.getStatus(), is(200));
+    }
+
 }

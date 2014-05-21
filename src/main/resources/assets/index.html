@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>StackExchange Viewer</title>
+    <script type="text/javascript" src="jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="react-0.10.0/build/react.js"></script>
+    <script type="text/javascript" src="react-0.10.0/build/JSXTransformer.js"></script>
+    <script type="text/jsx" src="QuestionList.jsx.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+</head>
+<body>
+<div class="container theme-showcase" role="main">
+    <div class="page-header">
+        <h1>Unanswered questions</h1>
+    </div>
+
+    <div id="main"/>
+    <script type="text/jsx">
+
+        /** @jsx React.DOM */
+        React.renderComponent(
+        <QuestionList source="../unanswered"/>
+        ,
+        document.getElementById('main')
+        );
+    </script>
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>
