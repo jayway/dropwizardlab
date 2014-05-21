@@ -1,0 +1,1 @@
+#Allows you to perform extra checks after maven has built. Return anything other than 0 to fail the build.

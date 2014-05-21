@@ -1,0 +1,17 @@
+# ignore all .-files
+.*
+# except for .gitignore
+!.gitignore
+
+target/
+#ignore temporary files
+*~
+#ignore Android generated files
+gen
+bin
+#ignore IntelliJ IDEA files
+.idea
+*.iws
+*.ipr
+*.iml
+
