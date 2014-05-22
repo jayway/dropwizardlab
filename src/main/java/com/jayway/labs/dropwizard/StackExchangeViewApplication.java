@@ -1,5 +1,6 @@
 package com.jayway.labs.dropwizard;
 
+import com.jayway.labs.dropwizard.health.SiteHealthCheck;
 import com.jayway.labs.dropwizard.resources.UnansweredResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -25,6 +26,9 @@ public class StackExchangeViewApplication extends Application<StackExchangeViewC
     public void run(StackExchangeViewConfiguration configuration,
                     Environment environment) {
         environment.jersey().register(new UnansweredResource());
+
+        environment.healthChecks().register("site", new SiteHealthCheck());
+
     }
 
 }
