@@ -2,6 +2,7 @@ package com.jayway.labs.dropwizard;
 
 import com.jayway.labs.dropwizard.resources.UnansweredResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -17,6 +18,7 @@ public class StackExchangeViewApplication extends Application<StackExchangeViewC
 
     @Override
     public void initialize(Bootstrap<StackExchangeViewConfiguration> bootstrap) {
+        bootstrap.addBundle(new AssetsBundle("/assets/", "/assets/"));
     }
 
     @Override

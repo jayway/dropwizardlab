@@ -7,6 +7,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AppITest {
@@ -37,6 +38,13 @@ public class AppITest {
                 .get(ClientResponse.class);
 
         assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void checkHealthCheckExists()
+    {
+        //The "deadlock" health check is added by default
+        assertThat(RULE.getEnvironment().healthChecks().getNames().size(), is(not(1)));
     }
 
 }
