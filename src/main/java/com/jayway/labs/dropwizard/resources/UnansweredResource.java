@@ -1,5 +1,6 @@
 package com.jayway.labs.dropwizard.resources;
 
+import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.core.Question;
 
 import javax.ws.rs.GET;
@@ -12,12 +13,14 @@ import java.util.List;
 @Path("/unanswered")
 @Produces(MediaType.APPLICATION_JSON)
 public class UnansweredResource {
+    private final StackExchangeClient client;
 
-    public UnansweredResource() {
+    public UnansweredResource(StackExchangeClient client) {
+        this.client = client;
     }
 
     @GET
     public List<Question> questions() {
-        return Arrays.asList(new Question("1", "dummy"));
+        return client.unansweredQuestions();
     }
 }

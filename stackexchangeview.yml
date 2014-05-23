@@ -1,1 +1,5 @@
 site: stackoverflow
+
+httpClient:
+  timeout: 30seconds
+  connectionTimeout: 30seconds

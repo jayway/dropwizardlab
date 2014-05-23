@@ -2,8 +2,10 @@ package com.jayway.labs.dropwizard.resources;
 
 import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.core.Question;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import org.fest.assertions.data.MapEntry;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -37,5 +39,8 @@ public class UnansweredResourceITest {
         })).containsAll(questions);
     }
 
-
+    @Test
+    public void testGetQuestionsCached() {
+        assertThat(resources.client().resource("/unanswered").get(ClientResponse.class).getHeaders()).contains(MapEntry.entry("Cache-Control", Arrays.asList("no-transform, max-age=60")));
+    }
 }

@@ -1,9 +1,12 @@
 package com.jayway.labs.dropwizard;
 
+import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.health.SiteHealthCheck;
 import com.jayway.labs.dropwizard.resources.UnansweredResource;
+import com.sun.jersey.api.client.Client;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -25,7 +28,13 @@ public class StackExchangeViewApplication extends Application<StackExchangeViewC
     @Override
     public void run(StackExchangeViewConfiguration configuration,
                     Environment environment) {
-        environment.jersey().register(new UnansweredResource());
+        final Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration())
+                .using(environment)
+                .build("jerseyClient");
+
+        final StackExchangeClient stackExchangeClient = new StackExchangeClient(client, configuration.getSite());
+
+        environment.jersey().register(new UnansweredResource(stackExchangeClient));
 
         environment.healthChecks().register("site", new SiteHealthCheck());
 
