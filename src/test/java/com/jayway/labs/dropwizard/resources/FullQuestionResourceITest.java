@@ -2,6 +2,7 @@ package com.jayway.labs.dropwizard.resources;
 
 import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.core.FullQuestion;
+import com.sun.jersey.api.client.ClientResponse;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -33,5 +34,9 @@ public class FullQuestionResourceITest {
         assertThat(resources.client().resource("/questions/123").get(FullQuestion.class).equals(fullQuestion));
     }
 
+    @Test
+    public void getsWithInvalidLongGivesMessage() {
+        assertThat(resources.client().resource("/questions/abc").get(ClientResponse.class).getEntity(String.class)).contains("\"abc\" is not a number.");
+    }
 
 }

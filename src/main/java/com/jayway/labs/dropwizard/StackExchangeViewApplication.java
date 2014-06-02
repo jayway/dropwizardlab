@@ -2,6 +2,7 @@ package com.jayway.labs.dropwizard;
 
 import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.health.SiteHealthCheck;
+import com.jayway.labs.dropwizard.resources.FullQuestionResource;
 import com.jayway.labs.dropwizard.resources.UnansweredResource;
 import com.sun.jersey.api.client.Client;
 import io.dropwizard.Application;
@@ -35,6 +36,7 @@ public class StackExchangeViewApplication extends Application<StackExchangeViewC
         final StackExchangeClient stackExchangeClient = new StackExchangeClient(client, configuration.getSite());
 
         environment.jersey().register(new UnansweredResource(stackExchangeClient));
+        environment.jersey().register(new FullQuestionResource(stackExchangeClient));
 
         environment.healthChecks().register("site", new SiteHealthCheck());
 
