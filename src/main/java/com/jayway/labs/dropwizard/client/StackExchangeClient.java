@@ -2,6 +2,7 @@ package com.jayway.labs.dropwizard.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.labs.dropwizard.core.FullQuestion;
 import com.jayway.labs.dropwizard.core.Question;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -35,6 +36,15 @@ public class StackExchangeClient {
         return questions;
     }
 
+    public FullQuestion getFullQuestion(Long id) {
+        URI uri = URI.create(baseUri + "questions/" + id + "?filter=withbody&site=" + site);
+        List<FullQuestion> questions = new ArrayList<FullQuestion>();
+        requestQuestions(uri, (String s) -> parseFullQuestion(questions, s));
+        if (!questions.isEmpty()) {
+            return questions.iterator().next();
+        }
+        return null;
+    }
 
     protected void requestQuestions(URI uri, Consumer<String> responseProcessor) {
         logger.debug("Requesting external resource {}.", uri);
@@ -62,6 +72,26 @@ public class StackExchangeClient {
                 JsonNode idNode = node.findPath("question_id");
                 questions.add(new Question(idNode.toString(), titleNode.textValue()));
             });
+        } catch (IOException e) {
+            logger.error("Error when parsing data.", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void parseFullQuestion(List<FullQuestion> questions, String stringResponse) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonRootNode = mapper.readTree(stringResponse);
+
+            JsonNode items = jsonRootNode.findPath("items");
+
+            items.elements().forEachRemaining(node -> {
+                JsonNode titleNode = node.findPath("title");
+                JsonNode idNode = node.findPath("question_id");
+                JsonNode bodyNode = node.findPath("body");
+                questions.add(new FullQuestion(idNode.toString(), titleNode.textValue(), bodyNode.textValue()));
+            });
+
         } catch (IOException e) {
             logger.error("Error when parsing data.", e);
             throw new RuntimeException(e);
