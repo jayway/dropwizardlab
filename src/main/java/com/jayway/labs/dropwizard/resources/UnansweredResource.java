@@ -1,5 +1,6 @@
 package com.jayway.labs.dropwizard.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.core.Question;
 import io.dropwizard.jersey.caching.CacheControl;
@@ -23,6 +24,7 @@ public class UnansweredResource {
 
     @GET
     @CacheControl(maxAge = 1, maxAgeUnit = TimeUnit.MINUTES)
+    @Timed
     public List<Question> questions() {
         return client.unansweredQuestions();
     }
