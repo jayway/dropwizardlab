@@ -2,6 +2,7 @@ package com.jayway.labs.dropwizard.resources;
 
 import com.jayway.labs.dropwizard.client.StackExchangeClient;
 import com.jayway.labs.dropwizard.core.FullQuestion;
+import io.dropwizard.jersey.params.LongParam;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,7 +22,7 @@ public class FullQuestionResource {
 
     @GET
     @Path("{id}")
-    public FullQuestion getQuestion(@PathParam("id") Long id) {
-        return client.getFullQuestion(id);
+    public FullQuestion getQuestion(@PathParam("id") LongParam id) {
+        return client.getFullQuestion(id.get());
     }
 }

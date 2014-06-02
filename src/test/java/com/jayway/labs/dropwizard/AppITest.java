@@ -1,5 +1,6 @@
 package com.jayway.labs.dropwizard;
 
+import com.codahale.metrics.MetricRegistry;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import io.dropwizard.testing.junit.DropwizardAppRule;
@@ -46,5 +47,19 @@ public class AppITest {
         //The "deadlock" health check is added by default
         assertThat(RULE.getEnvironment().healthChecks().getNames().size(), is(not(1)));
     }
+
+    @Test
+    public void getUnansweredQuestionsTimedMetrics() {
+
+        Client client = new Client();
+        ClientResponse response = client.resource(
+                String.format("http://localhost:%d/unanswered", RULE.getLocalPort()))
+                .get(ClientResponse.class);
+
+
+        MetricRegistry metricRegistry = RULE.getEnvironment().metrics();
+        assertThat(metricRegistry.getTimers().containsKey("com.jayway.labs.dropwizard.resources.UnansweredResource.questions"), is(true));
+    }
+
 
 }
